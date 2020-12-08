@@ -1,18 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/morning_gradiant_background"
+        android:clipToPadding="false"
+        tools:context=".view.MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_weather_state"
+            android:layout_width="@dimen/weather_state_size"
+            android:layout_height="@dimen/weather_state_size"
+            android:layout_marginTop="@dimen/margin_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic___few_cloud_morning"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_current_temp"
+            style="@style/primary_text_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_XLarge"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_weather_state"
+            tools:text="24" />
+
+        <TextView
+            android:id="@+id/txt_max_min_temp"
+            style="@style/secondary_text_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:gravity="center_horizontal"
+            app:layout_constraintStart_toStartOf="@+id/txt_current_temp"
+            app:layout_constraintTop_toBottomOf="@id/txt_current_temp"
+            tools:text="25/14" />
+
+        <LinearLayout
+            android:id="@+id/city_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/txt_max_min_temp"
+            app:layout_constraintLeft_toLeftOf="@id/txt_current_temp"
+            android:background="@drawable/city_background"
+            android:layout_marginTop="@dimen/margin_XLarge">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_standard"
+                android:src="@drawable/ic_baseline_location_on_24"/>
+
+            <TextView
+                android:id="@+id/txt_city_name"
+                style="@style/primary_text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txt_current_temp"
+                app:layout_constraintTop_toBottomOf="@id/txt_current_temp"
+                tools:text="NewYork"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_standard"
+                android:layout_marginEnd="@dimen/margin_standard"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hor_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_XLarge"
+            app:layout_constraintTop_toBottomOf="@id/city_container"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ver_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_XLarge"
+            app:layout_constraintTop_toBottomOf="@id/hor_recycler_view"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

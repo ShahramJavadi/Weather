@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="primary_text_large">
+
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display4</item>
+
+    </style>
+
+
+    <style name="primary_text_medium">
+
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+
+    </style>
+
+
+    <style name="primary_text_small">
+
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+
+    </style>
+
+    <style name="secondary_text_large">
+
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+
+
+    </style>
+
+    <style name="secondary_text_small">
+
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+
+
+    </style>
+
+</resources>
