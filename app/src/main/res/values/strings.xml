@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="choose_your_cities">choose your city</string>
+    <string name="Exit">Exit</string>
+    <string name="connection_problem">Problem in connection</string>
+    <string name="retry">retry</string>
 </resources>

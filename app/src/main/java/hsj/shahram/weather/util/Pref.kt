@@ -4,7 +4,10 @@ class Pref {
 
     companion object{
 
-        val DEFAULT_CITY = "DefaultCity"
+        val SELECTED_CITY_ID = "Selected_City_Id"
+        val SELECTED_CITY_NAME = "Selected_City_Name"
+        val SELECTED_CITY_LAT = "Selected_City_Lat"
+        val SELECTED_CITY_LON = "Selected_City_Lon"
 
 
         fun putString(key : String , value : String?) =

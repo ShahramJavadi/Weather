@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="weather_state_size">200dp</dimen>
-    <dimen name="hourly_weather_icon_size">56dp</dimen>
-    <dimen name="daily_weather_icon_size">48dp</dimen>
+    <dimen name="weather_state_size">170dp</dimen>
+    <dimen name="hourly_weather_icon_size">32dp</dimen>
+    <dimen name="daily_weather_icon_size">24dp</dimen>
 
 
     <!-- margins-->
@@ -14,9 +14,9 @@
     <dimen name="margin_large">16dp</dimen>
 
     <!--font_size-->
-    <dimen name="font_size_large">40dp</dimen>
-    <dimen name="font_size_xlarge">50dp</dimen>
-    <dimen name="font_size_medium">25dp</dimen>
+    <dimen name="font_size_large">20dp</dimen>
+    <dimen name="font_size_xlarge">30dp</dimen>
+    <dimen name="font_size_medium">15dp</dimen>
 
 
 </resources>

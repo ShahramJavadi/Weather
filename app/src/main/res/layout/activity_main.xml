@@ -1,99 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import type="hsj.shahram.weather.util.Const" />
+
+        <import type="hsj.shahram.weather.util.UtilFuncKt" />
+
+        <variable
+            name="viewModel"
+            type="hsj.shahram.weather.viewmodel.MainViewModel" />
+
+        <variable
+            name="city"
+            type="hsj.shahram.weather.data.City" />
+
+        <variable
+            name="currentTemp"
+            type="String" />
+
+        <variable
+            name="maxMinTemp"
+            type="String" />
+
+        <variable
+            name="currentTimeStamp"
+            type="Long" />
+
+
+        <variable
+            name="iconCode"
+            type="String" />
+
+        <variable
+            name="weatherId"
+            type="Long" />
+    </data>
+
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/morning_gradiant_background"
-        android:clipToPadding="false"
-        tools:context=".view.MainActivity">
+        android:fillViewport="true">
 
-        <ImageView
-            android:id="@+id/iv_weather_state"
-            android:layout_width="@dimen/weather_state_size"
-            android:layout_height="@dimen/weather_state_size"
-            android:layout_marginTop="@dimen/margin_large"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic___few_cloud_morning"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            loadBackground="@{UtilFuncKt.getHourFromTimeStamp(currentTimeStamp , `HH`)}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:context=".view.MainActivity">
 
-        <TextView
-            android:id="@+id/txt_current_temp"
-            style="@style/primary_text_large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_XLarge"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_weather_state"
-            tools:text="24" />
-
-        <TextView
-            android:id="@+id/txt_max_min_temp"
-            style="@style/secondary_text_large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="@+id/txt_current_temp"
-            app:layout_constraintTop_toBottomOf="@id/txt_current_temp"
-            tools:text="25/14" />
-
-        <LinearLayout
-            android:id="@+id/city_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/txt_max_min_temp"
-            app:layout_constraintLeft_toLeftOf="@id/txt_current_temp"
-            android:background="@drawable/city_background"
-            android:layout_marginTop="@dimen/margin_XLarge">
 
             <ImageView
+                android:id="@+id/menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_standard"
-                android:src="@drawable/ic_baseline_location_on_24"/>
+                android:src="@drawable/ic_baseline_more_vert_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/margin_standard"
+                android:onClick="@{() -> viewModel.setClickEvent(viewModel.Companion.MENU_CLICKED)}"
+
+                android:layout_marginTop="@dimen/margin_small"/>
+            <ImageView
+                android:id="@+id/iv_weather_state"
+                bind:weatherId="@{weatherId}"
+                bind:hour="@{UtilFuncKt.getHourFromTimeStamp(currentTimeStamp , `HH`)}"
+                bind:iconCode="@{iconCode}"
+                android:layout_width="@dimen/weather_state_size"
+                android:layout_height="@dimen/weather_state_size"
+                android:layout_marginTop="@dimen/margin_large"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menu" />
 
             <TextView
-                android:id="@+id/txt_city_name"
-                style="@style/primary_text_medium"
+                android:id="@+id/txt_current_temp"
+                style="@style/primary_text_large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_XXLarge"
+                android:layout_marginTop="@dimen/margin_XLarge"
+                android:text="@{currentTemp}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_weather_state"
+                tools:text="24" />
+
+            <TextView
+                android:id="@+id/txt_max_min_temp"
+                style="@style/secondary_text_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@{maxMinTemp}"
                 app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txt_current_temp"
                 app:layout_constraintTop_toBottomOf="@id/txt_current_temp"
-                tools:text="NewYork"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_standard"
-                android:layout_marginEnd="@dimen/margin_standard"/>
+                tools:text="25/14" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/city_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_XXLarge"
+                android:layout_marginBottom="@dimen/margin_XXLarge"
+                android:background="@drawable/city_background"
+                android:onClick="@{() -> viewModel.setClickEvent(viewModel.CITIES_FRAME_CLICKED)}"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="@id/txt_current_temp"
+                app:layout_constraintTop_toBottomOf="@id/txt_max_min_temp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hor_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_XLarge"
-            app:layout_constraintTop_toBottomOf="@id/city_container"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:padding="@dimen/margin_small"
+                    android:src="@drawable/ic_baseline_location_on_24" />
+
+                <TextView
+                    android:id="@+id/txt_city_name"
+                    style="@style/primary_text_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/margin_standard"
+                    android:gravity="center_vertical"
+                    android:text="@{city.name}"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txt_current_temp"
+                    app:layout_constraintTop_toBottomOf="@id/txt_current_temp"
+                    tools:text="NewYork" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hor_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_XXLarge"
+                android:layout_marginTop="@dimen/margin_XLarge"
+                android:layout_marginRight="@dimen/margin_XXLarge"
+                app:layout_constraintTop_toBottomOf="@id/city_container" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ver_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_XLarge"
-            app:layout_constraintTop_toBottomOf="@id/hor_recycler_view"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ver_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/margin_XXLarge"
+                android:layout_marginTop="@dimen/margin_XLarge"
+                android:layout_marginRight="@dimen/margin_XXLarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hor_recycler_view" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
 
 </layout>

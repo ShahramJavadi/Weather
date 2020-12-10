@@ -6,15 +6,17 @@ class AppController : Application() {
 
 
     init {
+
         instance = this
+
     }
 
     companion object {
 
-        private var instance: AppController? = null
+        private lateinit var instance: AppController
 
         fun getAppController(): AppController {
-            return instance as AppController
+            return instance
 
         }
 
