@@ -10,6 +10,7 @@
     <data>
 
         <import type="hsj.shahram.weather.util.Const" />
+        <import type="android.view.View"/>
 
         <import type="hsj.shahram.weather.util.UtilFuncKt" />
 
@@ -41,6 +42,10 @@
         <variable
             name="weatherId"
             type="Long" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
     </data>
 
 
@@ -57,6 +62,16 @@
             tools:context=".view.MainActivity">
 
 
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/menu"
                 android:layout_width="wrap_content"
@@ -66,8 +81,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="@dimen/margin_standard"
                 android:onClick="@{() -> viewModel.setClickEvent(viewModel.Companion.MENU_CLICKED)}"
-
                 android:layout_marginTop="@dimen/margin_small"/>
+
             <ImageView
                 android:id="@+id/iv_weather_state"
                 bind:weatherId="@{weatherId}"
@@ -75,7 +90,7 @@
                 bind:iconCode="@{iconCode}"
                 android:layout_width="@dimen/weather_state_size"
                 android:layout_height="@dimen/weather_state_size"
-                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_standard"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintRight_toRightOf="parent"
@@ -110,13 +125,14 @@
                 android:id="@+id/city_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_XXLarge"
+                android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/margin_XXLarge"
+                android:layout_marginEnd="@dimen/margin_large"
                 android:background="@drawable/city_background"
                 android:onClick="@{() -> viewModel.setClickEvent(viewModel.CITIES_FRAME_CLICKED)}"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="@id/txt_current_temp"
-                app:layout_constraintTop_toBottomOf="@id/txt_max_min_temp">
+                app:layout_constraintTop_toBottomOf="@id/iv_weather_state">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -132,9 +148,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/margin_standard"
+                    android:layout_marginEnd="@dimen/margin_XXLarge"
                     android:gravity="center_vertical"
                     android:text="@{city.name}"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     app:layout_constraintEnd_toEndOf="@+id/txt_current_temp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/txt_current_temp"

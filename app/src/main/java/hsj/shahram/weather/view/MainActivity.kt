@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -25,10 +26,7 @@ import hsj.shahram.weather.data.DailyWeather
 import hsj.shahram.weather.data.TimeOfDay
 import hsj.shahram.weather.databinding.ActivityMainBinding
 import hsj.shahram.weather.databinding.CitiesListLayoutBinding
-import hsj.shahram.weather.util.Const
-import hsj.shahram.weather.util.getHourFromTimeStamp
-import hsj.shahram.weather.util.getStatusBarColor
-import hsj.shahram.weather.util.kToC
+import hsj.shahram.weather.util.*
 import hsj.shahram.weather.view.adapter.CitiesListAdapter
 import hsj.shahram.weather.view.adapter.DayWeekListAdapter
 import hsj.shahram.weather.view.adapter.HourListAdapter
@@ -54,7 +52,6 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
 
 
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,10 +81,11 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
         binding.currentTimeStamp = System.currentTimeMillis() / 1000
 
         clickListener()
-
-        weatherCityObserver()
-        defaultCityObserver()
         viewModel.findDefaultOrSelectedCity()
+        defaultCityObserver()
+        weatherCityObserver()
+
+
 
         setupHourRecyclerView()
         setupDayRecyclerView()
@@ -95,12 +93,15 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
     }
 
 
-    private fun showConnectionSnackBar()
-    {
-        val snack :Snackbar
-        snack = Snackbar.make(binding.root ,getString(R.string.connection_problem) , Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.retry) ){
-                if(binding.city != null)
+    private fun showConnectionSnackBar(message: String?) {
+        val snack: Snackbar
+        snack = Snackbar.make(
+            binding.root,
+            message.let { it.toString() },
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(getString(R.string.retry)) {
+                if (binding.city != null)
                     viewModel.getCityWeatherData(binding.city as City)
 
             }
@@ -170,26 +171,52 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
         viewModel.cityWeatherData.observe(this) {
 
 
-            if (it == null)
-            {
-                showConnectionSnackBar()
-                return@observe
+            it?.let {
+
+                when (it.status) {
+
+                    Status.SUCCESS -> {
+                        binding.isLoading = false
+
+                        it.data?.let {
+                            hourListAdapter.submitList(it.hourly)
+
+                            dayWeekListAdapter.submitList(it.daily)
+
+                            binding.iconCode = it.current.weather.get(0).icon
+                            binding.weatherId = it.current.weather.get(0).id
+
+                            binding.currentTemp = kToC(it.current.temp) + Const.DEGREE_SYMBOL
+                            binding.maxMinTemp =
+                                kToC(it.daily.get(0).temp.max) + Const.DEGREE_SYMBOL +
+                                        "/" +
+                                        kToC(it.daily.get(0).temp.min) + Const.DEGREE_SYMBOL
+                        }
+
+
+                    }
+
+
+                    Status.ERROR -> {
+
+                        binding.isLoading = false
+
+                        showConnectionSnackBar(it.message)
+                    }
+
+
+                    Status.LOADING -> {
+
+
+                        binding.isLoading = true
+
+
+                    }
+
+                }
+
 
             }
-
-                hourListAdapter.submitList(it.hourly)
-
-                dayWeekListAdapter.submitList(it.daily)
-
-                binding.iconCode = it.current.weather.get(0).icon
-                binding.weatherId = it.current.weather.get(0).id
-
-                binding.currentTemp = kToC(it.current.temp) + Const.DEGREE_SYMBOL
-                binding.maxMinTemp = kToC(it.daily.get(0).temp.max) + Const.DEGREE_SYMBOL +
-                        "/" +
-                        kToC(it.daily.get(0).temp.min) + Const.DEGREE_SYMBOL
-
-
 
 
         }
@@ -206,8 +233,6 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
 
                 binding.city = it
                 viewModel.getCityWeatherData(it)
-
-
             }
 
         }
@@ -267,7 +292,7 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
             .setMenuRadius(10f) // sets the corner radius.
             .setMenuShadow(10f) // sets the shadow.
             .setTextGravity(Gravity.CENTER)
-            .setOnMenuItemClickListener(OnMenuItemClickListener(fun(position , item){finish()}))
+            .setOnMenuItemClickListener(OnMenuItemClickListener(fun(position, item) { finish() }))
             .build()
         powerMenu.showAsAnchorCenter(binding.menu)
 

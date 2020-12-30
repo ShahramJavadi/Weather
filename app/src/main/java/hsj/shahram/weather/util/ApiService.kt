@@ -7,6 +7,7 @@ import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -68,11 +69,11 @@ interface ApiService {
 
 
     @GET("data/2.5/onecall")
-    fun getCityWeatherData(
+    suspend fun getCityWeatherData(
         @Query("appid") apiKey: String?,
         @Query("lat") lat: Double?,
         @Query("lon") lon: Double?
-    ): Call<Weather>
+    ): Weather
 
 
 }

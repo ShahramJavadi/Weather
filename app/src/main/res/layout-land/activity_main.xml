@@ -116,7 +116,7 @@
                 android:onClick="@{() -> viewModel.setClickEvent(viewModel.CITIES_FRAME_CLICKED)}"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="@id/txt_current_temp"
-                app:layout_constraintTop_toBottomOf="@id/txt_max_min_temp">
+                app:layout_constraintTop_toBottomOf="@id/iv_weather_state">
 
                 <ImageView
                     android:layout_width="wrap_content"

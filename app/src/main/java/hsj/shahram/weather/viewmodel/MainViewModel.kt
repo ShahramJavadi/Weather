@@ -1,18 +1,22 @@
 package hsj.shahram.weather.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
 import hsj.shahram.weather.data.City
 import hsj.shahram.weather.data.Weather
 import hsj.shahram.weather.repository.MainRepo
+import hsj.shahram.weather.util.Resources
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class MainViewModel : ViewModel() {
 
 
     var citiesLiveData: LiveData<List<City>>
     var defaultSelectedCityData: LiveData<City>
-    var cityWeatherData: LiveData<Weather>
+    var cityWeatherData: MutableLiveData<Resources<Weather>>
     var clickEvent : LiveEvent<String>  = LiveEvent()
     var repo: MainRepo
 
@@ -31,7 +35,7 @@ class MainViewModel : ViewModel() {
         repo = MainRepo()
         citiesLiveData = repo.citiesLiveData
         defaultSelectedCityData = repo.defaultSelectedCityData
-        cityWeatherData = repo.cityWeatherData
+        cityWeatherData = MutableLiveData()
 
 
     }
@@ -51,12 +55,32 @@ class MainViewModel : ViewModel() {
 
     }
 
-    fun getCityWeatherData(city : City)
-    {
+    fun getCityWeatherData(city : City) {
+       viewModelScope.launch(IO) {
 
-        repo.getWeatherCityData(city)
+
+            cityWeatherData.postValue(Resources.loading(null))
+
+           try {
+
+               cityWeatherData.postValue(Resources.success(repo.getWeatherCityData(city)))
+
+           }catch (e : Exception)
+           {
+
+               cityWeatherData.postValue(Resources.error(null , e.message ?: "Unknown Error"))
+
+           }
+
+
+
+
+       }
 
     }
+
+
+
 
     fun findDefaultOrSelectedCity()
     {

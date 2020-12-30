@@ -30,7 +30,6 @@ class MainRepo {
 
 
     // this function retrieve selected city by user or default city(Tehran) if user not selected any city yet
-
     fun findDefaultOrSelectedCity() {
 
         val selectedCityId = Pref.getString(Pref.SELECTED_CITY_ID)
@@ -71,46 +70,16 @@ class MainRepo {
 
     }
 
-    fun getWeatherCityData(city: City) {
+   suspend fun getWeatherCityData(city: City) =
 
         ApiService.create().getCityWeatherData(
             BuildConfig.API_KEY,
             city.coord?.lat?.toDouble(),
-            city.coord?.lon?.toDouble()
-        ).enqueue(object : retrofit2.Callback<Weather>{
-
-
-
-            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-
-                if(response.isSuccessful)
-                {
-
-                    cityWeatherData.postValue(response.body())
-
-                }
-                else{
-
-                    cityWeatherData.postValue(null)
-
-                }
-
-            }
-
-            override fun onFailure(call: Call<Weather>, t: Throwable) {
+            city.coord?.lon?.toDouble())
 
 
 
 
-                    cityWeatherData.postValue(null)
-
-
-
-            }
-        })
-
-
-    }
 
     // set default city (Tehran)
     private fun setDefaultCity() {
