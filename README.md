@@ -1,5 +1,5 @@
 # Weather
-An Application show weather of Iran's cities and forecast weather for next 7 days using Openweathermap api.
+An Application shows weather of Iran's cities and forecast weather for next 7 days using Openweathermap api.
 
 
 
