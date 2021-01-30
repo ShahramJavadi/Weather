@@ -5,14 +5,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.City
-import hsj.shahram.weather.data.DailyWeather
-import hsj.shahram.weather.databinding.CityItemBinding
+import hsj.shahram.weather.data.model.DailyWeather
 import hsj.shahram.weather.databinding.DailyWeatherItemBinding
-import hsj.shahram.weather.util.Const
-import hsj.shahram.weather.util.kToC
+import javax.inject.Inject
 
-class DayWeekListAdapter(var clickListener: OnDayClickListener) : RecyclerView.Adapter<DayWeekListAdapter.DayWeekHolder>() {
+class DayWeekListAdapter @Inject constructor(var clickListener: OnDayClickListener) : RecyclerView.Adapter<DayWeekListAdapter.DayWeekHolder>() {
 
     private var dailyList : List<DailyWeather> = ArrayList<DailyWeather>()
 

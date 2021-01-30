@@ -11,7 +11,7 @@
 
         <variable
             name="dailyModel"
-            type="hsj.shahram.weather.data.DailyWeather" />
+            type="hsj.shahram.weather.data.model.DailyWeather" />
 
         <variable
             name="clickListener"

@@ -1,19 +1,11 @@
 package hsj.shahram.weather.util
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.text.format.DateUtils
-import hsj.shahram.weather.AppController
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.TimeOfDay
+import hsj.shahram.weather.data.model.TimeOfDay
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
-fun getPreferenceInstance(): SharedPreferences =
-
-    AppController.getAppController()
-        .getSharedPreferences(Const.SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
 
 // this function convert kelvin to celsius

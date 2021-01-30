@@ -4,11 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import hsj.shahram.weather.data.City
+import hsj.shahram.weather.data.model.City
 import hsj.shahram.weather.R
 import hsj.shahram.weather.databinding.CityItemBinding
+import javax.inject.Inject
 
-class CitiesListAdapter(var clickListener: OnCitiesClickListener)
+class CitiesListAdapter @Inject constructor(var clickListener: OnCitiesClickListener)
     : RecyclerView.Adapter<CitiesListAdapter.CitiesHolder>() {
 
     private var cityList : List<City> = ArrayList<City>()

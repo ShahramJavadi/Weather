@@ -1,12 +1,8 @@
 package hsj.shahram.weather.view
 
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
 import android.view.Gravity
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,10 +16,12 @@ import com.skydoves.powermenu.MenuAnimation
 import com.skydoves.powermenu.OnMenuItemClickListener
 import com.skydoves.powermenu.PowerMenu
 import com.skydoves.powermenu.PowerMenuItem
+import hsj.shahram.weather.AppController
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.City
-import hsj.shahram.weather.data.DailyWeather
-import hsj.shahram.weather.data.TimeOfDay
+import hsj.shahram.weather.data.model.City
+import hsj.shahram.weather.data.model.DailyWeather
+import hsj.shahram.weather.data.model.TimeOfDay
+import hsj.shahram.weather.data.remote.Status
 import hsj.shahram.weather.databinding.ActivityMainBinding
 import hsj.shahram.weather.databinding.CitiesListLayoutBinding
 import hsj.shahram.weather.util.*
@@ -31,6 +29,8 @@ import hsj.shahram.weather.view.adapter.CitiesListAdapter
 import hsj.shahram.weather.view.adapter.DayWeekListAdapter
 import hsj.shahram.weather.view.adapter.HourListAdapter
 import hsj.shahram.weather.viewmodel.MainViewModel
+import hsj.shahram.weather.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListener,
@@ -38,11 +38,17 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
 
 
     private lateinit var cityDialog: AlertDialog
-    private lateinit var citiesListAdapter: CitiesListAdapter
+
+    @Inject
+     lateinit var citiesListAdapter: CitiesListAdapter
     private lateinit var binding: ActivityMainBinding;
     private lateinit var viewModel: MainViewModel
-    private lateinit var hourListAdapter: HourListAdapter
-    private lateinit var dayWeekListAdapter: DayWeekListAdapter
+    @Inject
+     lateinit var hourListAdapter: HourListAdapter
+    @Inject
+     lateinit var dayWeekListAdapter: DayWeekListAdapter
+    @Inject
+    lateinit var factory: ViewModelFactory;
 
 
     val citiesObserver = Observer<List<City>> {
@@ -56,6 +62,10 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppController.getAppController().appComponent.getMainComponent().setCityAdapterListener(this)
+            . setDayWeekAdapterListener(this).build().inject(this)
+
         setStatusBarColor()
         binding = DataBindingUtil.inflate(
             layoutInflater, R.layout.activity_main, null, false
@@ -71,7 +81,7 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
     // setup view model here
     private fun setupViewModel() {
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
     }
 
@@ -159,7 +169,7 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
 
         val recyclerView: RecyclerView = citiesBinding.rvCities
         recyclerView.layoutManager = LinearLayoutManager(this)
-        citiesListAdapter = CitiesListAdapter(this)
+      //  citiesListAdapter = CitiesListAdapter(this)
         recyclerView.adapter = citiesListAdapter
 
 
@@ -246,7 +256,7 @@ class MainActivity : AppCompatActivity(), CitiesListAdapter.OnCitiesClickListene
             this, RecyclerView.HORIZONTAL, false
         )
 
-        hourListAdapter = HourListAdapter()
+   //     hourListAdapter = HourListAdapter()
         binding.horRecyclerView.adapter = hourListAdapter
 
 

@@ -6,14 +6,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.City
-import hsj.shahram.weather.data.HourlyWeather
-import hsj.shahram.weather.databinding.CityItemBinding
+import hsj.shahram.weather.data.model.HourlyWeather
 import hsj.shahram.weather.databinding.HourlyWeatherItemBinding
-import hsj.shahram.weather.util.Const
-import hsj.shahram.weather.util.kToC
+import javax.inject.Inject
 
-class HourListAdapter : RecyclerView.Adapter<HourListAdapter.HourlyHolder>() {
+class HourListAdapter  @Inject constructor()
+    : RecyclerView.Adapter<HourListAdapter.HourlyHolder>() {
 
     private var list : List<HourlyWeather> = ArrayList<HourlyWeather>()
 

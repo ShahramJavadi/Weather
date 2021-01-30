@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import hsj.shahram.weather.AppController
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.TimeOfDay
+import hsj.shahram.weather.data.model.TimeOfDay
 
 object BindingAdapterMethods {
     @BindingAdapter("loadBackground")

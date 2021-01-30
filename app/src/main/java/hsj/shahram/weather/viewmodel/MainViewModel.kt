@@ -2,23 +2,23 @@ package hsj.shahram.weather.viewmodel
 
 import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
-import hsj.shahram.weather.data.City
-import hsj.shahram.weather.data.Weather
+import hsj.shahram.weather.data.model.City
+import hsj.shahram.weather.data.model.Weather
 import hsj.shahram.weather.repository.MainRepo
-import hsj.shahram.weather.util.Resources
-import kotlinx.coroutines.Dispatchers
+import hsj.shahram.weather.data.remote.Resources
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel @Inject constructor(val repo: MainRepo) : ViewModel() {
 
 
     var citiesLiveData: LiveData<List<City>>
     var defaultSelectedCityData: LiveData<City>
     var cityWeatherData: MutableLiveData<Resources<Weather>>
     var clickEvent : LiveEvent<String>  = LiveEvent()
-    var repo: MainRepo
+
 
     companion object{
 
@@ -32,7 +32,6 @@ class MainViewModel : ViewModel() {
 
     init {
 
-        repo = MainRepo()
         citiesLiveData = repo.citiesLiveData
         defaultSelectedCityData = repo.defaultSelectedCityData
         cityWeatherData = MutableLiveData()

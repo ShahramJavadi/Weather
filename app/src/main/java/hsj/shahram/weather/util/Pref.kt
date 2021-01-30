@@ -1,8 +1,13 @@
 package hsj.shahram.weather.util
 
-class Pref {
+import android.content.Context
+import android.content.SharedPreferences
+import javax.inject.Inject
 
-    companion object{
+class Pref @Inject constructor(context: Context){
+
+        private val pref : SharedPreferences = context.getSharedPreferences(Const.SHARED_PREF_NAME ,
+        Context.MODE_PRIVATE)
 
         val SELECTED_CITY_ID = "Selected_City_Id"
         val SELECTED_CITY_NAME = "Selected_City_Name"
@@ -11,7 +16,7 @@ class Pref {
 
 
         fun putString(key : String , value : String?) =
-            getPreferenceInstance().edit().putString(key , value).apply()
+            pref.edit().putString(key , value).apply()
 
 
 
@@ -19,10 +24,10 @@ class Pref {
 
 
         fun getString(key : String)
-         = getPreferenceInstance().getString(key , "")
+         = pref.getString(key , "")
 
 
-    }
+
 
 
 

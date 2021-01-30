@@ -9,7 +9,7 @@
 
         <variable
             name="cityList"
-            type="List&lt;hsj.shahram.weather.data.City>" />
+            type="hsj.shahram.weather.data.model.City" />
         
         
         

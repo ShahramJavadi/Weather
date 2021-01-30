@@ -1,27 +1,27 @@
 package hsj.shahram.weather.repository
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import hsj.shahram.weather.AppController
 import hsj.shahram.weather.BuildConfig
-import hsj.shahram.weather.data.City
+import hsj.shahram.weather.data.model.City
 import hsj.shahram.weather.R
-import hsj.shahram.weather.data.Coordinate
-import hsj.shahram.weather.data.Weather
-import hsj.shahram.weather.util.ApiService
+import hsj.shahram.weather.data.model.Coordinate
+import hsj.shahram.weather.data.model.Weather
+import hsj.shahram.weather.data.remote.ApiService
 import hsj.shahram.weather.util.Pref
-import retrofit2.Call
-import retrofit2.Response
-import java.io.IOException
 import java.io.InputStreamReader
 import java.io.Reader
-import javax.security.auth.callback.Callback
+import javax.inject.Inject
 
 
-class MainRepo {
+class MainRepo @Inject constructor(
+    val context: Context,
+    val apiService: ApiService, val pref: Pref
+) {
 
 
     var citiesLiveData: MutableLiveData<List<City>> = MutableLiveData()
@@ -32,7 +32,7 @@ class MainRepo {
     // this function retrieve selected city by user or default city(Tehran) if user not selected any city yet
     fun findDefaultOrSelectedCity() {
 
-        val selectedCityId = Pref.getString(Pref.SELECTED_CITY_ID)
+        val selectedCityId = pref.getString(pref.SELECTED_CITY_ID)
 
         if (selectedCityId.equals("")) {
 
@@ -42,13 +42,13 @@ class MainRepo {
 
 
         val coordinate = Coordinate(
-            Pref.getString(Pref.SELECTED_CITY_LAT)?.toDouble(),
-            Pref.getString(Pref.SELECTED_CITY_LON)?.toDouble()
+            pref.getString(pref.SELECTED_CITY_LAT)?.toDouble(),
+            pref.getString(pref.SELECTED_CITY_LON)?.toDouble()
         )
 
         var city: City = City(
-            Pref.getString(Pref.SELECTED_CITY_ID)?.toLong(),
-            Pref.getString(Pref.SELECTED_CITY_NAME),
+            pref.getString(pref.SELECTED_CITY_ID)?.toLong(),
+            pref.getString(pref.SELECTED_CITY_NAME),
             coordinate
         )
 
@@ -58,36 +58,32 @@ class MainRepo {
     }
 
 
-
     // save selected city in preference
-    fun saveSelectedCity(city: City)
-    {
-        Pref.putString(Pref.SELECTED_CITY_ID, city.id.toString())
-        Pref.putString(Pref.SELECTED_CITY_NAME, city.name)
-        Pref.putString(Pref.SELECTED_CITY_LON, city.coord?.lon.toString())
-        Pref.putString(Pref.SELECTED_CITY_LAT, city.coord?.lat.toString())
+    fun saveSelectedCity(city: City) {
+        pref.putString(pref.SELECTED_CITY_ID, city.id.toString())
+        pref.putString(pref.SELECTED_CITY_NAME, city.name)
+        pref.putString(pref.SELECTED_CITY_LON, city.coord?.lon.toString())
+        pref.putString(pref.SELECTED_CITY_LAT, city.coord?.lat.toString())
 
 
     }
 
-   suspend fun getWeatherCityData(city: City) =
+    suspend fun getWeatherCityData(city: City) =
 
-        ApiService.create().getCityWeatherData(
+     apiService.getCityWeatherData(
             BuildConfig.API_KEY,
             city.coord?.lat?.toDouble(),
-            city.coord?.lon?.toDouble())
-
-
-
+            city.coord?.lon?.toDouble()
+        )
 
 
     // set default city (Tehran)
     private fun setDefaultCity() {
 
-        Pref.putString(Pref.SELECTED_CITY_ID, "112931")
-        Pref.putString(Pref.SELECTED_CITY_NAME, "Tehran")
-        Pref.putString(Pref.SELECTED_CITY_LON, "51.421509")
-        Pref.putString(Pref.SELECTED_CITY_LAT, "35.694389")
+        pref.putString(pref.SELECTED_CITY_ID, "112931")
+        pref.putString(pref.SELECTED_CITY_NAME, "Tehran")
+        pref.putString(pref.SELECTED_CITY_LON, "51.421509")
+        pref.putString(pref.SELECTED_CITY_LAT, "35.694389")
 
     }
 
@@ -95,7 +91,7 @@ class MainRepo {
     fun getCities() {
 
         val reader: Reader = InputStreamReader(
-            AppController.getAppController().resources.openRawResource(
+           context.resources.openRawResource(
                 R.raw.extracted_cities
             )
         )

@@ -10,7 +10,7 @@
 
         <variable
             name="hourlyWeather"
-            type="hsj.shahram.weather.data.HourlyWeather" />
+            type="hsj.shahram.weather.data.model.HourlyWeather" />
 
         <variable
             name="currentTimeStamp"

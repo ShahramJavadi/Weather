@@ -20,7 +20,7 @@
 
         <variable
             name="city"
-            type="hsj.shahram.weather.data.City" />
+            type="hsj.shahram.weather.data.model.City" />
 
         <variable
             name="currentTemp"
